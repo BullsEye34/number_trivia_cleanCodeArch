@@ -8,7 +8,7 @@ class GetConcreteNumberTrivia {
 
   GetConcreteNumberTrivia(this.numberTriviaRepository);
 
-  Future<Either<Failure, NumberTrivia>> excecute({required int number}) async {
+  Future<Either<Failure, NumberTrivia>> excecute({required int? number}) async {
     return await numberTriviaRepository.getConcreteNumberTrivia(number);
   }
 }
