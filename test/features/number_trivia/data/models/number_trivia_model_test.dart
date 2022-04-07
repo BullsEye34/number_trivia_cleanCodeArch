@@ -15,7 +15,7 @@ void main() {
     expect(tNumberTriviaModel, isA<NumberTrivia>());
   });
 
-  group("From JSON ", () async {
+  group("From JSON ", () {
     test("Should return valid model whn the JSON number is an integer ",
         () async {
       // arrange
