@@ -41,4 +41,18 @@ void main() {
       expect(result, tNumberTriviaModel);
     });
   });
+
+  group("toJson", () {
+    test("toJson should return JSON Map containing proper data", () async {
+      // act
+      final result = tNumberTriviaModel.toJson();
+      // assert
+      final expectedMap = {
+        "text":
+            "1e+21 is the number of grains of sand on all the world's beaches put together.",
+        "number": 1
+      };
+      expect(result, expectedMap);
+    });
+  });
 }
