@@ -7,7 +7,10 @@ import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivi
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  final tNumberTriviaModel = NumberTriviaModel(number: 1, text: 'test');
+  final tNumberTriviaModel = NumberTriviaModel(
+      number: 1,
+      text:
+          "1e+21 is the number of grains of sand on all the world's beaches put together.");
 
   test('should be a subclass of NumberTriviaEntity entity', () async {
     // assert
