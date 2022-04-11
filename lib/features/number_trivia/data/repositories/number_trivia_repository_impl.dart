@@ -1,5 +1,5 @@
 import 'package:numbertrivia/core/error/exceptions.dart';
-import 'package:numbertrivia/core/platform/network_information.dart';
+import 'package:numbertrivia/core/network/network_information.dart';
 import 'package:numbertrivia/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:numbertrivia/core/error/failures.dart';
