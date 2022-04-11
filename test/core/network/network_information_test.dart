@@ -16,4 +16,19 @@ void main() {
     networkInformationImpl =
         NetworkInformationImpl(mockInternetConnectionChecker);
   });
+
+  group("Is Connected?", () {
+    test("Should forward call to InternetConnectionChecker.hasConnection",
+        () async {
+      final tHasConnectionFuture = Future.value(true);
+      // arrange
+      when(mockInternetConnectionChecker.hasConnection)
+          .thenAnswer((_) async => tHasConnectionFuture);
+      // act
+      final result = networkInformationImpl.isConnected;
+      // assert
+      verify(mockInternetConnectionChecker.hasConnection);
+      expect(result, tHasConnectionFuture);
+    });
+  });
 }
