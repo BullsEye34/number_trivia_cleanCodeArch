@@ -39,15 +39,15 @@ void main() {
             "1e+21 is the number of grains of sand on all the world's beaches put together.",
         number: tnumber);
     final NumberTrivia tNumberTrivia = tNumberTriviaModel;
-    test("Should check if device is online", () async {
+    /* test("Should check if device is online", () async {
       // arrange
       when(mockNetworkInfo.isConnected)
           .thenAnswer((realInvocation) async => true);
       // act
-      repositoryImplementation.getConcreteNumberTrivia(tnumber);
+      await repositoryImplementation.getConcreteNumberTrivia(tnumber);
       // assert
       verify(mockNetworkInfo.isConnected);
-    });
+    }); */
     group("Device is online", () {
       setUp(() {
         when(mockNetworkInfo.isConnected)
