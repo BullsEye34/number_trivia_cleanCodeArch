@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:numbertrivia/core/error/exceptions.dart';
+import 'package:numbertrivia/core/error/failures.dart';
 import 'package:numbertrivia/core/platform/network_information.dart';
 import 'package:numbertrivia/features/number_trivia/data/datasources/number_trivia_local_datasource.dart';
 import 'package:numbertrivia/features/number_trivia/data/datasources/number_trivia_remote_datasource.dart';
@@ -68,22 +70,38 @@ void main() {
       });
 
       test(
-          "should cache Remote Data locally when a call to remote datasource is successful",
+          "should return ServerFailure when a call to remote datasource is unsuccessful",
           () async {
         // arrange
         when(mockRemoteDataSource.getConcreteNumberTrivia(tnumber))
-            .thenAnswer((realInvocation) async => tNumberTriviaModel);
+            .thenThrow(ServerException());
         // act
-        await repositoryImplementation.getConcreteNumberTrivia(tnumber);
+        final result =
+            await repositoryImplementation.getConcreteNumberTrivia(tnumber);
         // assert
         verify(mockRemoteDataSource.getConcreteNumberTrivia(tnumber));
-        verify(mockLocalDataSource.cacheNumberTrivia(tNumberTriviaModel));
+        verifyZeroInteractions(mockLocalDataSource);
+        expect(result, equals(Left(ServerFailure())));
       });
     });
     group("Device is offline", () {
       setUp(() {
         when(mockNetworkInfo.isConnected)
             .thenAnswer((realInvocation) async => false);
+      });
+      test("should retrun local cache data when cache data is present",
+          () async {
+        // ararnge
+        when(mockLocalDataSource.getLastNumberTrivia())
+            .thenAnswer((realInvocation) async => tNumberTriviaModel);
+        // act
+
+        final result =
+            await repositoryImplementation.getConcreteNumberTrivia(tnumber);
+        //assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(mockLocalDataSource.getLastNumberTrivia());
+        expect(result, equals(Right(tNumberTrivia)));
       });
     });
   });
