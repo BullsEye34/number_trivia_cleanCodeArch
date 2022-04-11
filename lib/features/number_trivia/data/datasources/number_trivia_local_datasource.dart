@@ -10,5 +10,5 @@ abstract class NumberTriviaLocalDatasource {
   /// Saves the [NumberTriviaModel] to the cache.
   /// [NumberTriviaModel] is the number trivia which was gotten.
   /// Throws [CacheException] if the cache is full.
-  Future<void> cacheNumberTrivia(NumberTriviaModel triviaToCache);
+  Future<void>? cacheNumberTrivia(NumberTriviaModel triviaToCache);
 }
