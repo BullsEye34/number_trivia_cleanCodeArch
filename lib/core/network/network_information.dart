@@ -8,5 +8,5 @@ class NetworkInformationImpl implements NetworkInformation {
   late final InternetConnectionChecker internetConnectionChecker;
   NetworkInformationImpl(this.internetConnectionChecker);
   @override
-  Future<bool>? get isConnected => null;
+  Future<bool>? get isConnected => internetConnectionChecker.hasConnection;
 }
