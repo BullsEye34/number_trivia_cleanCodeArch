@@ -17,7 +17,7 @@ class NumberTriviaRepositoryImplementation implements NumberTriviaRepository {
 
   @override
   Future<Either<Failure, NumberTrivia>?>? getConcreteNumberTrivia(int number) {
-    // TODO: implement getConcreteNumberTrivia
+    networkInformation.isConnected;
     return null;
   }
 
