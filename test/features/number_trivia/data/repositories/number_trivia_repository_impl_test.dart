@@ -103,6 +103,21 @@ void main() {
         verify(mockLocalDataSource.getLastNumberTrivia());
         expect(result, equals(Right(tNumberTrivia)));
       });
+
+      test("should throw CacheFailure when cache data is not present",
+          () async {
+        // ararnge
+        when(mockLocalDataSource.getLastNumberTrivia())
+            .thenThrow(CacheException());
+        // act
+
+        final result =
+            await repositoryImplementation.getConcreteNumberTrivia(tnumber);
+        //assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(mockLocalDataSource.getLastNumberTrivia());
+        expect(result, equals(Left(CacheFailure())));
+      });
     });
   });
 }
