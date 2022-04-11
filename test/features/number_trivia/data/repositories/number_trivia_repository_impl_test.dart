@@ -66,6 +66,19 @@ void main() {
         verify(mockRemoteDataSource.getConcreteNumberTrivia(tnumber));
         expect(result, equals(Right(tNumberTrivia)));
       });
+
+      test(
+          "should cache Remote Data locally when a call to remote datasource is successful",
+          () async {
+        // arrange
+        when(mockRemoteDataSource.getConcreteNumberTrivia(tnumber))
+            .thenAnswer((realInvocation) async => tNumberTriviaModel);
+        // act
+        await repositoryImplementation.getConcreteNumberTrivia(tnumber);
+        // assert
+        verify(mockRemoteDataSource.getConcreteNumberTrivia(tnumber));
+        verify(mockLocalDataSource.cacheNumberTrivia(tNumberTriviaModel));
+      });
     });
     group("Device is offline", () {
       setUp(() {
