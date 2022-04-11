@@ -34,6 +34,26 @@ void main() {
     );
   });
 
+  void runTestsOnline(Function body) {
+    group("Device is online", () {
+      setUp(() {
+        when(mockNetworkInfo.isConnected)
+            .thenAnswer((realInvocation) async => true);
+      });
+      body();
+    });
+  }
+
+  void runTestsOffline(Function body) {
+    group("Device is offline", () {
+      setUp(() {
+        when(mockNetworkInfo.isConnected)
+            .thenAnswer((realInvocation) async => false);
+      });
+      body();
+    });
+  }
+
   group("Get conrete Number Trivia", () {
     const tnumber = 1;
     final tNumberTriviaModel = NumberTriviaModel(
@@ -53,11 +73,7 @@ void main() {
       // assert
       verify(mockNetworkInfo.isConnected);
     });
-    group("Device is online", () {
-      setUp(() {
-        when(mockNetworkInfo.isConnected)
-            .thenAnswer((realInvocation) async => true);
-      });
+    runTestsOnline(() {
       test(
           "should return Remote Data when a call to remote datasource is successful",
           () async {
@@ -87,11 +103,7 @@ void main() {
         expect(result, equals(Left(ServerFailure())));
       });
     });
-    group("Device is offline", () {
-      setUp(() {
-        when(mockNetworkInfo.isConnected)
-            .thenAnswer((realInvocation) async => false);
-      });
+    runTestsOffline(() {
       test("should retrun local cache data when cache data is present",
           () async {
         // ararnge
