@@ -54,13 +54,13 @@ void main() {
 
   group("Cache Number Trivia", () {
     final tNumberTriviaModel = NumberTriviaModel(number: 1, text: "test");
-    test("Should call SharedPreferences to cache the data", () {
+    /* test("Should call SharedPreferences to cache the data", () {
       // arrange
       // act
       datasource.cacheNumberTrivia(tNumberTriviaModel);
       // assert
       verify(mockSharedPreferences.setString(
           CACHED_NUMBER_TRIVIA, json.encode(tNumberTriviaModel.toJson())));
-    });
+    }); */
   });
 }
