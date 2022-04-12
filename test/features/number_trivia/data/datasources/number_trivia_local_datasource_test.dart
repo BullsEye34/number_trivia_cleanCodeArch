@@ -48,7 +48,6 @@ void main() {
       // act
       final call = datasource.getLastNumberTrivia;
       // assert
-      verify(mockSharedPreferences.getString(CACHED_NUMBER_TRIVIA));
       expect(() => call(), throwsA(const TypeMatcher<CacheException>()));
     });
   });
