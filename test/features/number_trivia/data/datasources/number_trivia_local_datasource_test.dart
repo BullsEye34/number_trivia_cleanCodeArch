@@ -29,7 +29,7 @@ void main() {
         "Should return NumberTriviaModel from sharedPreferences when there is one in the cache",
         () async {
       // arrange
-      when(mockSharedPreferences.getString(any as String))
+      when(mockSharedPreferences.getString("CACHED_NUMBER_TRIVIA"))
           .thenReturn(fixture('trivia_cache.json'));
       // act
       final result = await datasource.getLastNumberTrivia();
