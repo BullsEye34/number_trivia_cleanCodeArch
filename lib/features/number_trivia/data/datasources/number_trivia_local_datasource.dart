@@ -1,4 +1,5 @@
 import 'package:numbertrivia/features/number_trivia/data/models/number_trivia_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class NumberTriviaLocalDatasource {
   /// Gets the cached [NumberTriviaModel] which was gotten the last time
@@ -11,4 +12,20 @@ abstract class NumberTriviaLocalDatasource {
   /// [NumberTriviaModel] is the number trivia which was gotten.
   /// Throws [CacheException] if the cache is full.
   Future<void>? cacheNumberTrivia(NumberTriviaModel triviaToCache);
+}
+
+class NumberTriviaLocalDataSourceImpl implements NumberTriviaLocalDatasource {
+  late final SharedPreferences sharedPreferences;
+  NumberTriviaLocalDataSourceImpl({required this.sharedPreferences});
+  @override
+  Future<void>? cacheNumberTrivia(NumberTriviaModel triviaToCache) {
+    // TODO: implement cacheNumberTrivia
+    return null;
+  }
+
+  @override
+  Future<NumberTriviaModel>? getLastNumberTrivia() {
+    // TODO: implement getLastNumberTrivia
+    return null;
+  }
 }
