@@ -1,8 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:numbertrivia/core/error/failures.dart';
 
-class InpuConverter {
+class InputConverter {
   Either<Failure, int>? stringToUnignedInteger(String str) {
-    throw UnimplementedError();
+    try {
+      return Right(int.parse(str));
+    } on FormatException {
+      return Left(InvalidInputFailure());
+    }
   }
 }
+
+class InvalidInputFailure extends Failure {}
