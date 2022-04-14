@@ -58,10 +58,7 @@ void main() {
 
       when(mockInputConverter.stringToUnignedInteger(tNumberString))
           .thenReturn(Left(InvalidInputFailure()));
-      // act
-      bloc.add(GetTriviaForConcreteNumber(tNumberString));
-
-      // assert
+      // assert Later
       var matchers = [
         Empty(),
         Error(message: INVALID_INPUT_FAILURE_MESSAGE),
@@ -70,6 +67,9 @@ void main() {
         bloc.state,
         emitsInOrder(matchers),
       );
+
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
     });
   });
 }
