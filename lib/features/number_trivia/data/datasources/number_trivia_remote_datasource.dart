@@ -19,8 +19,10 @@ class NumberTriviaRemoteDatasourceImpl implements NumberTriviaRemoteDatasource {
 
   @override
   Future<NumberTriviaModel>? getConcreteNumberTrivia(int number) {
-    // TODO: implement getConcreteNumberTrivia
-    throw UnimplementedError();
+    client.get(
+      Uri.parse("http://numbersapi.com/$number"),
+      headers: {'Content-Type': 'application/json'},
+    );
   }
 
   @override

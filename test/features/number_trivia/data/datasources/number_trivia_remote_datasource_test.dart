@@ -18,7 +18,7 @@ void main() {
 
   group("Get Concrete Number Trivia", () {
     final tnumber = 1;
-    test(
+    /* test(
         "Should perform GET request on URL with tNumber being enpoint and with application.json header",
         () async {
       // arrange
@@ -38,6 +38,6 @@ void main() {
           headers: {'Content-Type': 'application/json'},
         ),
       );
-    });
+    }); */
   });
 }
