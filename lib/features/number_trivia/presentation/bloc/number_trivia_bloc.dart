@@ -8,6 +8,11 @@ import 'package:numbertrivia/features/number_trivia/domain/usecases/get_random_n
 part 'number_trivia_event.dart';
 part 'number_trivia_state.dart';
 
+const String SEVER_FAILURE_MESSAGE = 'Server Failure';
+const String CACHE_FAILURE_MESSAGE = 'Cache Failure';
+const String INVALID_INPUT_FAILURE_MESSAGE =
+    'Invalid Input - The number must be a positive integer or zero.';
+
 class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   late final GetConcreteNumberTrivia getConcreteNumberTrivia;
   late final GetRandomNumberTrivia getRandomNumberTrivia;
@@ -17,11 +22,14 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     required this.getRandomNumberTrivia,
     required this.inputConverter,
   }) : super(Empty()) {
-    on<NumberTriviaEvent>((event, emit) {
+    on<GetTriviaForConcreteNumber>((event, emit) async {
       // TODO: implement event handler
-      if (event is GetTriviaForConcreteNumber) {
-        inputConverter.stringToUnignedInteger(event.numberSting);
-      }
+      final inputEither =
+          inputConverter.stringToUnignedInteger(event.numberSting);
+
+      inputEither!.fold((l) {
+        emit(Error(message: INVALID_INPUT_FAILURE_MESSAGE));
+      }, (r) => throw UnimplementedError());
     });
   }
 

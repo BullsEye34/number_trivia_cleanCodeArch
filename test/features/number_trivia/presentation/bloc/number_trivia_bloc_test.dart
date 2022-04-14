@@ -53,7 +53,7 @@ void main() {
       verify(mockInputConverter.stringToUnignedInteger(tNumberString));
     });
 
-    test("should emit [ERROR] state when input is invalid", () async {
+    test("should emit [ERROR] state when input is invalid", () async* {
       // arrange
 
       when(mockInputConverter.stringToUnignedInteger(tNumberString))
@@ -64,7 +64,7 @@ void main() {
         Error(message: INVALID_INPUT_FAILURE_MESSAGE),
       ];
       expectLater(
-        bloc.state,
+        bloc,
         emitsInOrder(matchers),
       );
 
