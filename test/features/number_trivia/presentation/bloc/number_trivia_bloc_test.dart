@@ -52,5 +52,24 @@ void main() {
       // assert
       verify(mockInputConverter.stringToUnignedInteger(tNumberString));
     });
+
+    test("should emit [ERROR] state when input is invalid", () async {
+      // arrange
+
+      when(mockInputConverter.stringToUnignedInteger(tNumberString))
+          .thenReturn(Left(InvalidInputFailure()));
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+
+      // assert
+      var matchers = [
+        Empty(),
+        Error(message: INVALID_INPUT_FAILURE_MESSAGE),
+      ];
+      expectLater(
+        bloc.state,
+        emitsInOrder(matchers),
+      );
+    });
   });
 }
