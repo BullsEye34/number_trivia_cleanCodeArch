@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:numbertrivia/core/util/input_converter.dart';
 import 'package:mockito/mockito.dart';
+import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:numbertrivia/features/number_trivia/domain/usecases/get_concrete_number_trivia.dart';
 import 'package:numbertrivia/features/number_trivia/domain/usecases/get_random_number_trivia.dart';
 import 'package:numbertrivia/features/number_trivia/presentation/bloc/number_trivia_bloc.dart';
@@ -32,5 +33,24 @@ void main() {
   test('initialState should be Empty', () {
     // assert
     expect(bloc.initialState, equals(Empty()));
+  });
+
+  group("Get Trivia For Concrete Number", () {
+    late final tNumberString = "1";
+    late final tNumberParsed = 1;
+    late final tNumberTrivia = NumberTrivia(number: 1, text: "test trivia");
+    test(
+        "should call InputConverter to validate and convert the string to an UnSigned integer",
+        () async {
+      // arrange
+      when(mockInputConverter.stringToUnignedInteger(tNumberString))
+          .thenReturn(Right(tNumberParsed));
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+      await untilCalled(
+          mockInputConverter.stringToUnignedInteger(tNumberString));
+      // assert
+      verify(mockInputConverter.stringToUnignedInteger(tNumberString));
+    });
   });
 }
