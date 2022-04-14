@@ -12,7 +12,7 @@ void main() {
     test("Should return integer when string represents unsigned integer",
         () async {
       // arrange
-      final str = '123';
+      const str = '123';
       // act
       final result = inputConverter.stringToUnignedInteger(str);
       // assert
@@ -21,7 +21,16 @@ void main() {
 
     test("Should return Failure when string is not an integer", () async {
       // arrange
-      final str = 'abc';
+      const str = 'abc';
+      // act
+      final result = inputConverter.stringToUnignedInteger(str);
+      // assert
+      expect(result, Left(InvalidInputFailure()));
+    });
+
+    test("Should return Failure when string is a -ve integer", () async {
+      // arrange
+      const str = '-23';
       // act
       final result = inputConverter.stringToUnignedInteger(str);
       // assert
