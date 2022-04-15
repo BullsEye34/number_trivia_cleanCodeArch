@@ -118,7 +118,7 @@ void main() {
 
       setUpMockConverterSuccess();
       when(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)))
-          .thenAnswer((_) async => Left(ServerFailure()));
+          .thenAnswer((_) async => Left(CacheFailure()));
       // assert later
       final expected = [
         Empty(),
@@ -168,7 +168,7 @@ void main() {
         () async* {
       // arrange
       when(mockGetRandomNumberTrivia(NoParams()))
-          .thenAnswer((_) async => Left(ServerFailure()));
+          .thenAnswer((_) async => Left(CacheFailure()));
       // assert later
       final expected = [
         Empty(),
