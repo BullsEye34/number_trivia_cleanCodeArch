@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:numbertrivia/core/error/failures.dart';
+import 'package:numbertrivia/core/usecases/usecase.dart';
 import 'package:numbertrivia/core/util/input_converter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivia.dart';
@@ -127,6 +128,56 @@ void main() {
       expectLater(bloc.state, expected);
       // act
       bloc.add(GetTriviaForConcreteNumber(tNumberString));
+    });
+  });
+
+  group("Get Trivia For Random Number", () {
+    late final tNumberTrivia = NumberTrivia(number: 1, text: "test trivia");
+
+    test("should give data for the Random useCase", () async* {
+      // arrange
+      when(mockGetRandomNumberTrivia(NoParams()))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+
+      // act
+      bloc.add(GetTriviaForRandomNumber());
+      await untilCalled(mockGetRandomNumberTrivia(NoParams()));
+      // assert
+      verify(mockGetRandomNumberTrivia(NoParams()));
+    });
+
+    test(
+        "Should emit [Empty, Loading, Loaded], when data is fetched successfully",
+        () async* {
+      // arrange
+      when(mockGetRandomNumberTrivia(NoParams()))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+      // assert later
+      final expected = [
+        Empty(),
+        Loading(),
+        Loaded(trivia: tNumberTrivia),
+      ];
+      expectLater(bloc.state, expected);
+      // act
+      bloc.add(GetTriviaForRandomNumber());
+    });
+
+    test(
+        "Should emit [Loading, Error], with proper message when data is not fetched successfully",
+        () async* {
+      // arrange
+      when(mockGetRandomNumberTrivia(NoParams()))
+          .thenAnswer((_) async => Left(ServerFailure()));
+      // assert later
+      final expected = [
+        Empty(),
+        Loading(),
+        Error(message: CACHE_FAILURE_MESSAGE),
+      ];
+      expectLater(bloc.state, expected);
+      // act
+      bloc.add(GetTriviaForRandomNumber());
     });
   });
 }
