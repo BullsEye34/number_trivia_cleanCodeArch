@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:numbertrivia/core/error/failures.dart';
 import 'package:numbertrivia/core/util/input_converter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivia.dart';
@@ -91,7 +92,7 @@ void main() {
     });
 
     test(
-        "Should emit Empty, Loading and Loaded when data is fetched successfully",
+        "Should emit [Empty, Loading, Loaded], when data is fetched successfully",
         () async* {
       // arrange
 
@@ -103,6 +104,25 @@ void main() {
         Empty(),
         Loading(),
         Loaded(trivia: tNumberTrivia),
+      ];
+      expectLater(bloc.state, expected);
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+    });
+
+    test(
+        "Should emit [Loading, Error], with proper message when data is not fetched successfully",
+        () async* {
+      // arrange
+
+      setUpMockConverterSuccess();
+      when(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)))
+          .thenAnswer((_) async => Left(ServerFailure()));
+      // assert later
+      final expected = [
+        Empty(),
+        Loading(),
+        Error(message: CACHE_FAILURE_MESSAGE),
       ];
       expectLater(bloc.state, expected);
       // act
