@@ -39,12 +39,15 @@ void main() {
     late final tNumberString = "1";
     late final tNumberParsed = 1;
     late final tNumberTrivia = NumberTrivia(number: 1, text: "test trivia");
+
+    void setUpMockConverterSuccess() =>
+        when(mockInputConverter.stringToUnignedInteger(tNumberString))
+            .thenReturn(Right(tNumberParsed));
     test(
         "should call InputConverter to validate and convert the string to an UnSigned integer",
         () async {
       // arrange
-      when(mockInputConverter.stringToUnignedInteger(tNumberString))
-          .thenReturn(Right(tNumberParsed));
+      setUpMockConverterSuccess();
       // act
       bloc.add(GetTriviaForConcreteNumber(tNumberString));
       await untilCalled(
@@ -68,6 +71,40 @@ void main() {
         emitsInOrder(matchers),
       );
 
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+    });
+
+    test("should give data for the concrete useCase", () async* {
+      // arrange
+
+      setUpMockConverterSuccess();
+      when(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+
+      // act
+      bloc.add(GetTriviaForConcreteNumber(tNumberString));
+      await untilCalled(
+          mockGetConcreteNumberTrivia(Params(number: tNumberParsed)));
+      // assert
+      verify(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)));
+    });
+
+    test(
+        "Should emit Empty, Loading and Loaded when data is fetched successfully",
+        () async* {
+      // arrange
+
+      setUpMockConverterSuccess();
+      when(mockGetConcreteNumberTrivia(Params(number: tNumberParsed)))
+          .thenAnswer((_) async => Right(tNumberTrivia));
+      // assert later
+      final expected = [
+        Empty(),
+        Loading(),
+        Loaded(trivia: tNumberTrivia),
+      ];
+      expectLater(bloc.state, expected);
       // act
       bloc.add(GetTriviaForConcreteNumber(tNumberString));
     });
