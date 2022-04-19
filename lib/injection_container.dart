@@ -12,12 +12,12 @@ import 'package:numbertrivia/features/number_trivia/presentation/bloc/number_tri
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-final sl = GetIt.instance;
+final GetIt sl = GetIt.instance;
 
-void init() async {
+Future<void> init() async {
   //! Features - Number Trivia
   // Register BLOC
-  sl.registerFactory(
+  sl.registerFactory<NumberTriviaBloc>(
     () => NumberTriviaBloc(
       getConcreteNumberTrivia: sl(),
       getRandomNumberTrivia: sl(),
@@ -51,8 +51,8 @@ void init() async {
       () => NetworkInformationImpl(sl()));
 
   //! Extrenal
-  final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
+  final sharedPreferencess = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferencess);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => InternetConnectionChecker());
 }
