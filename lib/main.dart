@@ -14,15 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData(primaryColor: Colors.blue.shade600);
+    ThemeData themee = ThemeData(
+      primaryColor: Colors.orange.shade800,
+      brightness: Brightness.light,
+    );
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Number Trivia',
-      theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(
-          secondary: Colors.blue.shade400,
+      theme: themee.copyWith(
+        colorScheme: themee.colorScheme.copyWith(
+          secondary: Colors.orange.shade600,
         ),
       ),
       home: NumberTriviaPage(),

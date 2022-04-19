@@ -14,8 +14,12 @@ class NumberTriviaPage extends StatelessWidget {
         elevation: 0,
         title: const Text('Number Trivia'),
         centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: buildBody(context),
+      body: SingleChildScrollView(
+        child: buildBody(context),
+        physics: BouncingScrollPhysics(),
+      ),
     );
   }
 
@@ -59,33 +63,7 @@ class NumberTriviaPage extends StatelessWidget {
                 height: 20,
               ),
               // Bottom Half
-              Column(
-                children: [
-                  const Placeholder(
-                    fallbackHeight: 50,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: const [
-                      Expanded(
-                        child: Placeholder(
-                          fallbackHeight: 100,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Placeholder(
-                          fallbackHeight: 100,
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              )
+              TriviaControls(),
             ],
           ),
         ),
