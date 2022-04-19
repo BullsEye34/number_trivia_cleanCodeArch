@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:numbertrivia/features/number_trivia/domain/entities/number_trivia.dart';
 import 'package:numbertrivia/features/number_trivia/presentation/bloc/number_trivia_bloc.dart';
 import 'package:numbertrivia/injection_container.dart';
 
@@ -27,37 +28,47 @@ class NumberTriviaPage extends StatelessWidget {
           child: Column(
             children: [
               // Top Half
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
 
               BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
                 builder: (context, state) {
                   if (state is Empty) {
-                    return MessageDisplay(
+                    return const MessageDisplay(
                       message: "Start Searching",
                     );
+                  } else if (state is Loading) {
+                    return const LoadingWidget();
+                  } else if (state is Loaded) {
+                    return TriviaDisplay(
+                      numberTrivia: state.trivia,
+                    );
+                  } else if (state is Error) {
+                    return MessageDisplay(
+                      message: state.message,
+                    );
                   }
-                  return Container(
+                  return SizedBox(
                     height: MediaQuery.of(context).size.height / 2.5,
                     child: Placeholder(),
                   );
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               // Bottom Half
               Column(
                 children: [
-                  Placeholder(
+                  const Placeholder(
                     fallbackHeight: 50,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
-                    children: [
+                    children: const [
                       Expanded(
                         child: Placeholder(
                           fallbackHeight: 100,
@@ -94,9 +105,69 @@ class MessageDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height / 2.5,
-      child: Text(
-        message,
-        style: TextStyle(fontSize: 30),
+      child: Center(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Text(
+            message,
+            style: TextStyle(fontSize: 30),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingWidget extends StatelessWidget {
+  const LoadingWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2.5,
+      child: const Center(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    );
+  }
+}
+
+class TriviaDisplay extends StatelessWidget {
+  final NumberTrivia numberTrivia;
+  const TriviaDisplay({
+    required this.numberTrivia,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2.5,
+      child: Column(
+        children: [
+          Text(
+            numberTrivia.number.toString(),
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Text(
+                  numberTrivia.text,
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
