@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 
 final sl = GetIt.instance;
 
-void init() {
+void init() async {
   //! Features - Number Trivia
   // Register BLOC
   sl.registerFactory(
@@ -51,7 +51,8 @@ void init() {
       () => NetworkInformationImpl(sl()));
 
   //! Extrenal
-  sl.registerLazySingletonAsync(() => SharedPreferences.getInstance());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => InternetConnectionChecker());
 }
